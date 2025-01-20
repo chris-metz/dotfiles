@@ -1,0 +1,24 @@
+return {}
+-- return {
+--   {
+--     "folke/which-key.nvim",
+--     opts = function(_, opts)
+--       local wk = require("which-key")
+--
+--       -- Register global keybindings
+--       wk.register({
+--         -- General mappings here
+--       })
+--
+--       -- Filetype-specific keybindings
+--       vim.api.nvim_create_autocmd("FileType", {
+--         pattern = "go", -- or any filetype like "python", "lua", etc.
+--         callback = function()
+--           wk.register({
+--             ["<leader>gx"] = { ":!go run %<CR>", "Run Go file" },
+--           }, { buffer = 0, prefix = "<leader>" })
+--         end,
+--       })
+--     end,
+--   },
+-- }
