@@ -1,0 +1,36 @@
+[alias]
+  dlog = -c diff.external=difft log --ext-diff
+  ds = -c diff.external=difft show --ext-diff
+  lol = log --graph --pretty='%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset'
+  lola = log --graph --pretty='%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset' --all
+; [core]
+;   pager = delta
+[color]
+  ui = true
+[core]
+  editor = nvim
+  excludesfile = ~/.gitignore_global
+	autocrlf = input
+; [delta]
+;   navigate = true    # use n and N to move between diff sections
+;     delta detects terminal colors automatically; set one of these to disable auto-detection
+;     dark = true
+;     light = true
+[diff]
+  external = difft
+#[fetch]
+#  prune = true
+[init]
+  defaultBranch = main
+; [interactive]
+;   diffFilter = delta --color-only
+[merge]
+  conflictstyle = diff3
+  ; tool = vimdiff
+; [pull]
+;   rebase = true
+[push]
+  autoSetupRemote = true
+[user]
+  name = Chris
+  email = hello@chrismetz.xyz
