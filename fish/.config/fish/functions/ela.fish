@@ -1,3 +1,3 @@
 function ela
-  eza -lga --group-directories-first  $argv
+  eza -lga --icons --group-directories-first  $argv
 end
