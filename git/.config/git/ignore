@@ -119,3 +119,5 @@ Thumbs.db
 # Code Recommenders
 #.recommenders/
 
+
+**/.claude/settings.local.json
