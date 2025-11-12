@@ -3,6 +3,7 @@
 ## General
 
 - Never git commit before explicitely asking to to so
+- Never remove any console.logs autonomously
 
 ## NodeJS/Bun projects
 
