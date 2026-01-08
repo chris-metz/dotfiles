@@ -15,6 +15,10 @@ function ts
         set ts_sec $ts
     end
 
-    # BSD date on macOS uses -r <seconds>
-    date -r $ts_sec "+%Y-%m-%d %H:%M:%S %Z"
+    # BSD date on macOS uses -r <seconds>, GNU date on Linux uses -d @<seconds>
+    if test (uname) = Darwin
+        date -r $ts_sec "+%Y-%m-%d %H:%M:%S %Z"
+    else
+        date -d @$ts_sec "+%Y-%m-%d %H:%M:%S %Z"
+    end
 end
