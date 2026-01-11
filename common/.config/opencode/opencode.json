@@ -1,0 +1,13 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "permission": {
+    "*": "ask"
+  },
+  "tui": {
+    "scroll_speed": 3,
+    "scroll_acceleration": {
+      "enabled": true
+    },
+    "diff_style": "stacked"
+  }
+}
