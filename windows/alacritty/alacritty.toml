@@ -1,0 +1,18 @@
+# config path: C:\Users\[username]\AppData\Roaming\alacritty
+
+[terminal]
+shell = { program = 'C:\Program Files\WSL\wsl.exe', args = ["--cd ~"] }
+
+[font]
+size = 13
+
+[font.normal]
+# family = 'Inconsolata Nerd Font'
+family = 'Inconsolata Nerd Font Mono'
+# family = 'UbuntuMono Nerd Font'
+
+
+[general]
+import = [
+    "catppuccin-mocha.toml"
+]
