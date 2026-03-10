@@ -1,3 +1,4 @@
+abbr -a clauded 'claude --dangerously-skip-permissions'
 abbr -a df df -h
 abbr -a gaa git add -A
 abbr -a gc git commit
