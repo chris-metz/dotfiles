@@ -16,7 +16,7 @@
     "glob": "allow",
     "list": "allow",
     "skill": "allow",
-    "todowrite": "ask",
+    "todowrite": "allow",
     "todoread": "allow",
     "webfetch": "allow",
     "question": "allow"
