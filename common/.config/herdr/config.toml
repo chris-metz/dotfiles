@@ -14,3 +14,16 @@ focus_pane_left = ["prefix+h", "alt+shift+h"]
 focus_pane_down = ["prefix+j", "alt+shift+j"]
 focus_pane_up = ["prefix+k", "alt+shift+k"]
 focus_pane_right = ["prefix+l", "alt+shift+l"]
+
+# Ohne diesen Block gilt der Default delivery = "off" — Herdr lehnt dann jede
+# Zustellung ab (notification show meldet reason "disabled"), inklusive Sound.
+# "terminal" laesst Windows Terminal eine echte Windows-Desktop-Notification
+# zeigen; "system" wuerde einen Linux-Notification-Daemon erwarten, den es
+# unter WSL2 hier nicht gibt.
+[ui.toast]
+delivery = "terminal"
+
+# Greift nur fuer Workspaces, die in der Herdr-UI im Hintergrund liegen.
+# Aus dem Terminal-Fenster klicken reicht nicht — dafuer den Workspace wechseln.
+[ui.sound]
+enabled = true
