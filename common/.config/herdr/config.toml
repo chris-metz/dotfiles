@@ -1,0 +1,16 @@
+onboarding = false
+
+[keys]
+prefix = "ctrl+a"
+
+# tmux-Logik: % teilt nebeneinander, " uebereinander
+# (herdr nennt die Richtungen umgekehrt)
+split_vertical = "prefix+percent"
+split_horizontal = "prefix+double_quote"
+
+# Prefix-freie Pane-Navigation. alt+shift statt ctrl+alt, weil ctrl+alt auf
+# deutschem Layout als AltGr interpretiert und vom Layout geschluckt wird.
+focus_pane_left = ["prefix+h", "alt+shift+h"]
+focus_pane_down = ["prefix+j", "alt+shift+j"]
+focus_pane_up = ["prefix+k", "alt+shift+k"]
+focus_pane_right = ["prefix+l", "alt+shift+l"]
