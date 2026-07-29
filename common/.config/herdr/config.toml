@@ -15,6 +15,10 @@ focus_pane_down = ["prefix+j", "alt+shift+j"]
 focus_pane_up = ["prefix+k", "alt+shift+k"]
 focus_pane_right = ["prefix+l", "alt+shift+l"]
 
+# Prefix-freier Tabwechsel. Ziffern sind auf deutschem Layout unshifted,
+# alt+1..9 kommt also sauber durch. prefix+1..9 bleibt als Default erhalten.
+switch_tab = ["prefix+1..9", "alt+1..9"]
+
 # Ohne diesen Block gilt der Default delivery = "off" — Herdr lehnt dann jede
 # Zustellung ab (notification show meldet reason "disabled"), inklusive Sound.
 # "terminal" laesst Windows Terminal eine echte Windows-Desktop-Notification
