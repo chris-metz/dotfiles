@@ -31,3 +31,9 @@ delivery = "terminal"
 # Aus dem Terminal-Fenster klicken reicht nicht — dafuer den Workspace wechseln.
 [ui.sound]
 enabled = true
+
+[theme]
+name = "catppuccin"
+auto_switch = true
+light_name = "catppuccin-latte"
+dark_name = "catppuccin"
