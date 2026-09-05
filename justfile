@@ -4,8 +4,3 @@ stow_common:
 unstow_common:
 	stow -v -D common
 	rm -f ~/.config/kitty/current-host.conf
-
-stow_pi:
-	stow -v -R pi
-unstow_pi:
-	stow -v -D pi
