@@ -33,13 +33,22 @@ navigate_workspace_down = ["down", "j"]
 navigate_pane_up = ""
 navigate_pane_down = ""
 
+# Sprung zu dem Agenten, dessen Notification gerade als Toast sichtbar ist —
+# also der, der fertig ist oder eine Eingabe will. Gilt nur solange der Toast
+# steht, danach fuehrt nur noch die Sidebar hin. alt+shift+o passt zur
+# Modifier-Familie der Pane-/Workspace-Navigation, prefix+o bleibt als Default.
+open_notification_target = ["prefix+o", "alt+shift+o"]
+
 # Ohne diesen Block gilt der Default delivery = "off" — Herdr lehnt dann jede
 # Zustellung ab (notification show meldet reason "disabled"), inklusive Sound.
-# "terminal" laesst Windows Terminal eine echte Windows-Desktop-Notification
-# zeigen; "system" wuerde einen Linux-Notification-Daemon erwarten, den es
-# unter WSL2 hier nicht gibt.
+# "herdr" rendert den Toast im Herdr-Frame; nur dann hat open_notification_target
+# ueberhaupt ein Ziel zum Fokussieren. "terminal" (Windows-Desktop-Notification
+# ueber Windows Terminal) und "system" (Linux-Notification-Daemon, unter WSL2
+# nicht vorhanden) zeigen die Meldung ausserhalb — dann springt die Taste nirgends
+# hin. Die Werte schliessen sich aus, es gibt keinen Fallback. Der Sound laeuft
+# bei "herdr" weiter, das bleibt das Signal fuer Fenster im Hintergrund.
 [ui.toast]
-delivery = "terminal"
+delivery = "herdr"
 
 # Greift nur fuer Workspaces, die in der Herdr-UI im Hintergrund liegen.
 # Aus dem Terminal-Fenster klicken reicht nicht — dafuer den Workspace wechseln.
