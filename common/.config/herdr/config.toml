@@ -19,6 +19,20 @@ focus_pane_right = ["prefix+l", "alt+shift+l"]
 # alt+1..9 kommt also sauber durch. prefix+1..9 bleibt als Default erhalten.
 switch_tab = ["prefix+1..9", "alt+1..9"]
 
+# Prefix-freier Workspace-Wechsel, gleiche Modifier-Familie wie die
+# Pane-Navigation. n/p wie prefix+n/prefix+p bei den Tabs (tmux-Logik);
+# alt+shift+left/right bleibt frei fuer move_tab_previous/next.
+next_workspace = ["alt+shift+n", "alt+shift+down"]
+previous_workspace = ["alt+shift+p", "alt+shift+up"]
+
+# Navigate-Mode (prefix+w): Vim-Tasten fuer die Workspace-Auswahl, zusaetzlich
+# zu den Pfeiltasten. j/k sind dort per Default die Pane-Navigation — die wird
+# hier geleert, weil Panes ohnehin ueber alt+shift+h/j/k/l erreichbar sind.
+navigate_workspace_up = ["up", "k"]
+navigate_workspace_down = ["down", "j"]
+navigate_pane_up = ""
+navigate_pane_down = ""
+
 # Ohne diesen Block gilt der Default delivery = "off" — Herdr lehnt dann jede
 # Zustellung ab (notification show meldet reason "disabled"), inklusive Sound.
 # "terminal" laesst Windows Terminal eine echte Windows-Desktop-Notification
