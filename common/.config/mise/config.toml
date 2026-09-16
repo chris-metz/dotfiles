@@ -1,0 +1,11 @@
+[tools]
+claude = "latest"
+codex = "latest"
+gh = "latest"
+grok = "latest"
+pi = "latest"
+
+[settings]
+# always install the newest release, don't wait for mise's default minimum release age
+minimum_release_age = "0"
+# minimum_release_age_excludes = ["claude"]
