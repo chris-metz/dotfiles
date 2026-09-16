@@ -1,0 +1,9 @@
+# Ghostty configuration
+# Reload with Cmd+Shift+, or via the Ghostty menu (Reload Configuration).
+# List available themes: ghostty +list-themes
+# List available fonts:  ghostty +list-fonts
+
+font-family = Agave Nerd Font
+font-size = 18
+
+theme = light:Catppuccin Latte,dark:Catppuccin Mocha
