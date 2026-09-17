@@ -1,7 +1,7 @@
 onboarding = false
 
 [keys]
-prefix = "ctrl+a"
+prefix = "ctrl+space"
 
 # tmux-Logik: % teilt nebeneinander, " uebereinander
 # (herdr nennt die Richtungen umgekehrt)
@@ -18,6 +18,12 @@ focus_pane_right = ["prefix+l", "alt+shift+l"]
 # Prefix-freier Tabwechsel. Ziffern sind auf deutschem Layout unshifted,
 # alt+1..9 kommt also sauber durch. prefix+1..9 bleibt als Default erhalten.
 switch_tab = ["prefix+1..9", "alt+1..9"]
+
+# Detach wie in tmux auf prefix+d statt prefix+q.
+detach = "prefix+d"
+
+# Neuer Workspace analog zu prefix+c fuer neue Tabs, statt prefix+shift+n.
+new_workspace = "prefix+shift+c"
 
 # Prefix-freier Workspace-Wechsel, gleiche Modifier-Familie wie die
 # Pane-Navigation. n/p wie prefix+n/prefix+p bei den Tabs (tmux-Logik);
@@ -38,6 +44,11 @@ navigate_pane_down = ""
 # steht, danach fuehrt nur noch die Sidebar hin. alt+shift+o passt zur
 # Modifier-Familie der Pane-/Workspace-Navigation, prefix+o bleibt als Default.
 open_notification_target = ["prefix+o", "alt+shift+o"]
+
+# prefix+c legt das Tab sofort mit generiertem Namen an, statt erst nach einem
+# Namen zu fragen. Umbenennen geht weiterhin ueber prefix+shift+t.
+[ui]
+prompt_new_tab_name = false
 
 # Ohne diesen Block gilt der Default delivery = "off" — Herdr lehnt dann jede
 # Zustellung ab (notification show meldet reason "disabled"), inklusive Sound.
