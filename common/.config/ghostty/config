@@ -32,3 +32,17 @@ keybind = super+digit_6=esc:6
 keybind = super+digit_7=esc:7
 keybind = super+digit_8=esc:8
 keybind = super+digit_9=esc:9
+
+# Cmd+Shift+N / Cmd+Shift+P an herdr durchreichen (next_workspace /
+# previous_workspace in herdr/config.toml). Unter Windows/Linux kommt
+# Alt+Shift+N/P direkt so an.
+# N: esc:N liest herdr als alt+shift+n.
+# P: esc:P geht NICHT, weil ESC P im Terminal-Protokoll eine DCS-Sequenz
+# einleitet und herdr dann auf deren Ende wartet. Deshalb hier die
+# Kitty-Keyboard-Kodierung: CSI 112 (p) ; 4 (1 + shift 1 + alt 2) u.
+keybind = super+shift+n=esc:N
+keybind = super+shift+p=text:\x1b[112;4u
+
+# Command Palette auf Cmd+Shift+K, weil Cmd+Shift+P (Ghostty-Default) oben an
+# herdr durchgereicht wird.
+keybind = super+shift+k=toggle_command_palette
