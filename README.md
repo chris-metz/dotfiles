@@ -22,3 +22,17 @@ Manual one-liner:
 ```bash
 infocmp -x xterm-kitty | ssh HOST 'mkdir -p ~/.terminfo && tic -x -o ~/.terminfo /dev/stdin'
 ```
+
+## macOS
+
+`macos/setup.sh` applies system settings that stow cannot cover, currently the
+per-keyboard modifier key mapping (Caps Lock → Globe on the external keyboard, so
+Wispr Flow's Fn hotkey works there too). It is idempotent:
+
+```fish
+just setup_macos
+```
+
+After changing a mapping in System Settings, refresh the generated block in
+`setup.sh` with `just backup_macos_keyboard` (or `macos/keyboard-modifier-mapping show`
+to only print the current mapping).

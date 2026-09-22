@@ -1,0 +1,161 @@
+#!/usr/bin/env python3
+"""Show or back up the macOS modifier key mapping per keyboard.
+
+System Settings > Keyboard > Keyboard Shortcuts... > Modifier Keys stores its
+choices per keyboard (USB vendor/product id) in the per-host global defaults as
+com.apple.keyboard.modifiermapping.<vendor>-<product>-<n>.
+
+  keyboard-modifier-mapping show            print the current mapping
+  keyboard-modifier-mapping backup [FILE]   rewrite the generated block in FILE
+                                            (default: setup.sh next to this tool)
+
+`backup` replaces everything between the markers
+  # >>> keyboard-modifier-mapping >>>
+  # <<< keyboard-modifier-mapping <<<
+in FILE, or appends the block if the markers are missing. Restoring is just
+running that file: it contains plain `defaults write` lines.
+"""
+import os
+import plistlib
+import re
+import subprocess
+import sys
+
+PREFIX = "com.apple.keyboard.modifiermapping."
+BEGIN = "# >>> keyboard-modifier-mapping >>>"
+END = "# <<< keyboard-modifier-mapping <<<"
+DEFAULT_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "setup.sh")
+
+# HID usage codes as macOS stores them in Src/Dst: (usage page << 32) | usage.
+KEY_NAMES = {
+    0x700000039: "Caps Lock",
+    0x7000000E0: "Left Control",
+    0x7000000E1: "Left Shift",
+    0x7000000E2: "Left Option",
+    0x7000000E3: "Left Command",
+    0x7000000E4: "Right Control",
+    0x7000000E5: "Right Shift",
+    0x7000000E6: "Right Option",
+    0x7000000E7: "Right Command",
+    0x700000029: "Escape",
+    0xFF00000003: "Globe (Fn)",
+    -1: "No Action",
+}
+
+
+def key_name(code):
+    return KEY_NAMES.get(code, "0x%X" % code)
+
+
+def current_mappings():
+    xml = subprocess.run(
+        ["defaults", "-currentHost", "export", "-g", "-"],
+        capture_output=True, check=True,
+    ).stdout
+    prefs = plistlib.loads(xml)
+    return {k: v for k, v in sorted(prefs.items()) if k.startswith(PREFIX)}
+
+
+def keyboard_names():
+    """(vendor, product) -> product name for the keyboards connected right now."""
+    names = {}
+    try:
+        out = subprocess.run(["hidutil", "list"], capture_output=True, text=True).stdout
+    except OSError:
+        return names
+    pattern = re.compile(
+        r"^0x([0-9a-f]+)\s+0x([0-9a-f]+)\s+0x[0-9a-f]+\s+(\d+)\s+(\d+)\s+0x[0-9a-f]+"
+        r"\s+\S+\s+\S+\s+(.*?)\s+\S+\s+[01]\s*$"
+    )
+    for line in out.splitlines():
+        m = pattern.match(line)
+        if not m:
+            continue
+        vendor, product, page, usage, name = m.groups()
+        if (page, usage) != ("1", "6"):  # Generic Desktop / Keyboard
+            continue
+        names.setdefault((int(vendor, 16), int(product, 16)), name)
+    return names
+
+
+def describe(key, entries, names):
+    m = re.match(re.escape(PREFIX) + r"(\d+)-(\d+)-(\d+)$", key)
+    if m:
+        vendor, product = int(m.group(1)), int(m.group(2))
+        label = names.get((vendor, product), "Keyboard")
+        head = "%s (vendor %d / product %d)" % (label, vendor, product)
+    else:
+        head = key
+    lines = [head]
+    for e in entries:
+        lines.append("    %s -> %s" % (
+            key_name(e.get("HIDKeyboardModifierMappingSrc")),
+            key_name(e.get("HIDKeyboardModifierMappingDst")),
+        ))
+    return lines
+
+
+def xml_fragment(entry):
+    parts = []
+    for k in sorted(entry):
+        v = entry[k]
+        if isinstance(v, bool) or not isinstance(v, int):
+            sys.exit("unexpected value in %s: %r" % (k, v))
+        parts.append("<key>%s</key><integer>%d</integer>" % (k, v))
+    return "<dict>%s</dict>" % "".join(parts)
+
+
+def generated_block(mappings, names):
+    out = [BEGIN]
+    for key, entries in mappings.items():
+        out.extend("# " + line for line in describe(key, entries, names))
+        frags = " \\\n  ".join("'%s'" % xml_fragment(e) for e in entries)
+        out.append("defaults -currentHost write -g %s -array \\\n  %s" % (key, frags))
+    out.append(END)
+    return "\n".join(out)
+
+
+def cmd_show():
+    mappings = current_mappings()
+    if not mappings:
+        print("no modifier key mapping set")
+        return
+    names = keyboard_names()
+    for key, entries in mappings.items():
+        print("\n".join(describe(key, entries, names)))
+
+
+def cmd_backup(path):
+    mappings = current_mappings()
+    if not mappings:
+        sys.exit("no modifier key mapping set, nothing to back up")
+    names = keyboard_names()
+    block = generated_block(mappings, names)
+    text = open(path).read() if os.path.exists(path) else "#!/bin/sh\nset -eu\n"
+    if BEGIN in text and END in text:
+        text = re.sub(
+            re.escape(BEGIN) + r".*?" + re.escape(END),
+            lambda _: block, text, count=1, flags=re.S,
+        )
+    else:
+        text = text.rstrip("\n") + "\n\n" + block + "\n"
+    with open(path, "w") as f:
+        f.write(text)
+    print("updated %s:" % path)
+    for key, entries in mappings.items():
+        print("\n".join("  " + l for l in describe(key, entries, names)))
+
+
+def main(argv):
+    cmd = argv[1] if len(argv) > 1 else "show"
+    path = argv[2] if len(argv) > 2 else DEFAULT_FILE
+    if cmd == "show":
+        cmd_show()
+    elif cmd == "backup":
+        cmd_backup(path)
+    else:
+        sys.exit(__doc__.strip())
+
+
+if __name__ == "__main__":
+    main(sys.argv)
