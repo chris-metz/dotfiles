@@ -6,6 +6,14 @@
 font-family = Agave Nerd Font
 font-size = 18
 
+# macOS-Schriftglaettung einschalten. Ghostty schaltet sie per Default ab,
+# iTerm2 nutzt sie auf Nicht-Retina-Displays. Ohne Glaettung wirkt Agave auf
+# dem externen 1080p-Monitor (1x) duenn und ausgefranst, auf dem Retina-
+# Display faellt es kaum auf. Staerke 0..255 (255 = Default), 200 ist ein
+# Tick leichter als der Default, ohne dass die Schrift wieder duenn wirkt.
+font-thicken = true
+font-thicken-strength = 200
+
 theme = light:Catppuccin Latte,dark:Catppuccin Mocha
 
 # Cmd+1..9 an herdr durchreichen statt Ghostty-Tabs zu wechseln.
