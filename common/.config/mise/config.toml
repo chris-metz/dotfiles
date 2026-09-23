@@ -3,6 +3,7 @@ claude = "latest"
 codex = "latest"
 gh = "latest"
 grok = "latest"
+node = "24"
 pi = "latest"
 
 [settings]
