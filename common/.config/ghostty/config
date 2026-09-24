@@ -14,7 +14,10 @@ font-size = 18
 font-thicken = true
 font-thicken-strength = 200
 
-theme = light:Catppuccin Latte,dark:Catppuccin Mocha
+# theme = light:Catppuccin Latte,dark:Catppuccin Mocha
+# Dunkles Theme beibehalten, unabhaengig vom macOS-Erscheinungsbild.
+theme = Catppuccin Mocha
+window-theme = dark
 
 # Cmd+1..9 an herdr durchreichen statt Ghostty-Tabs zu wechseln.
 # esc:<n> sendet ESC gefolgt von der Ziffer, was herdr als alt+<n> liest
