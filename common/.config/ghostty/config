@@ -22,7 +22,7 @@ window-theme = dark
 # Cmd+1..9 an herdr durchreichen statt Ghostty-Tabs zu wechseln.
 # esc:<n> sendet ESC gefolgt von der Ziffer, was herdr als alt+<n> liest
 # (siehe switch_tab in herdr/config.toml). Ghostty-Tabs bleiben ueber
-# Cmd+Shift+[ / Cmd+Shift+] und Ctrl+Tab erreichbar.
+# Cmd+Ctrl+1..9, Cmd+Shift+[ / Cmd+Shift+] und Ctrl+Tab erreichbar.
 # Beide Schreibweisen, weil Ghostty die Taste als Zeichen (1) und als
 # physische Taste (digit_1) per Default belegt.
 keybind = super+1=esc:1
@@ -43,6 +43,19 @@ keybind = super+digit_6=esc:6
 keybind = super+digit_7=esc:7
 keybind = super+digit_8=esc:8
 keybind = super+digit_9=esc:9
+
+# Ghostty-Tabs direkt anspringen, als Ersatz fuer die oben an herdr
+# abgegebenen Cmd+1..9. Wie der Ghostty-Default springt 9 zum letzten Tab.
+# Physische Tasten (digit_<n>), damit es unabhaengig vom Layout greift.
+keybind = super+ctrl+digit_1=goto_tab:1
+keybind = super+ctrl+digit_2=goto_tab:2
+keybind = super+ctrl+digit_3=goto_tab:3
+keybind = super+ctrl+digit_4=goto_tab:4
+keybind = super+ctrl+digit_5=goto_tab:5
+keybind = super+ctrl+digit_6=goto_tab:6
+keybind = super+ctrl+digit_7=goto_tab:7
+keybind = super+ctrl+digit_8=goto_tab:8
+keybind = super+ctrl+digit_9=last_tab
 
 # Cmd+Shift+N / Cmd+Shift+P an herdr durchreichen (next_workspace /
 # previous_workspace in herdr/config.toml). Unter Windows/Linux kommt
