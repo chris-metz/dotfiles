@@ -36,3 +36,12 @@ just setup_macos
 After changing a mapping in System Settings, refresh the generated block in
 `setup.sh` with `just backup_macos_keyboard` (or `macos/keyboard-modifier-mapping show`
 to only print the current mapping).
+
+## espanso
+
+The config lives in `common/.config/espanso`. On macOS espanso uses `~/.config/espanso`
+when it exists, ahead of its default `~/Library/Application Support/espanso`
+(`espanso path` shows which one is active).
+
+espanso does not notice edits to the stowed files, because they change in the repo,
+not under `~/.config/espanso`. Run `espanso restart` after editing.
