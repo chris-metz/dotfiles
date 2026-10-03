@@ -1,0 +1,7 @@
+# Snippets for working with coding agents
+
+# yaml-language-server: $schema=https://raw.githubusercontent.com/espanso/espanso/dev/schemas/match.schema.json
+
+matches:
+  - trigger: ":kk"
+    replace: "Ok, können wir diese Sitzung jetzt schließen? Oder gibt es noch etwas, das du loswerden willst?"
