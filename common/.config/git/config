@@ -9,7 +9,6 @@
   ui = true
 [core]
   editor = nvim
-  excludesfile = ~/.gitignore_global
 	autocrlf = input
 ; [delta]
 ;   navigate = true    # use n and N to move between diff sections
