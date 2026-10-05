@@ -1,6 +1,4 @@
 [alias]
-  dlog = -c diff.external=difft log --ext-diff
-  ds = -c diff.external=difft show --ext-diff
   lol = log --graph --pretty='%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset'
   lola = log --graph --pretty='%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset' --all
 ; [core]
@@ -15,8 +13,6 @@
 ;     delta detects terminal colors automatically; set one of these to disable auto-detection
 ;     dark = true
 ;     light = true
-[diff]
-  external = difft
 #[fetch]
 #  prune = true
 [init]
