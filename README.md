@@ -47,6 +47,16 @@ After changing a mapping in System Settings, refresh the generated block in
 to only print the current mapping). Do this before the next `just setup`, which would
 otherwise reset the mapping to the old block.
 
+## Agent instructions
+
+`common/.config/agents/AGENTS.md` holds the global instructions for every coding agent.
+Codex, OpenCode and pi read it through symlinks in the repo (`common/.codex/AGENTS.md`,
+`common/.config/opencode/AGENTS.md`, `common/.pi/agent/AGENTS.md`), which stow then links
+into `~` like any other file.
+
+Claude Code reads only `CLAUDE.md`, so `common/.claude/CLAUDE.md` imports the file with
+`@~/.config/agents/AGENTS.md`. Claude-only instructions go below that line.
+
 ## Claude Code mods
 
 Each folder in `claude-mods/` is a Claude Code mod (a plugin with hooks).
