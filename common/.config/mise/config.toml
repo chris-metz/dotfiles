@@ -4,6 +4,7 @@ codex = "latest"
 gh = "latest"
 grok = "latest"
 node = "24"
+"npm:@datalust/seqcli" = "latest"
 pi = "latest"
 
 [settings]
