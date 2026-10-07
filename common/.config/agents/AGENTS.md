@@ -9,3 +9,4 @@
 - Ausdrücklich sagen, was gleich bleibt, nicht nur, was sich ändert.
 - Ein konkretes Beispiel aus dem echten System vor der allgemeinen Regel.
 - Bei Entscheidungen eine Frage nach der anderen: zwei bis drei Optionen (A/B/C) mit je ein, zwei Sätzen, dazu eine klare Empfehlung mit Begründung.
+- Bei Entscheidungen bringt jede Frage nur die Fakten mit, die sie braucht, mit höchstens einem Pfad. Kein Fakten-Block vorab; der Rest gehört ins Ticket.
