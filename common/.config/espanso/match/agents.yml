@@ -3,5 +3,9 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/espanso/espanso/dev/schemas/match.schema.json
 
 matches:
+  - trigger: ":eins"
+    replace: "Lass uns bitte einen Klärungspunkt nach dem anderen durchgehen."
   - trigger: ":kk"
     replace: "Ok, können wir diese Sitzung jetzt schließen? Oder gibt es noch etwas, das du loswerden willst?"
+  - trigger: ":sum"
+    replace: "Sag mir bitte nochmal in max. ca. 5 Sätzen, was du eigentlich jetzt genau umgesetzt hast, und lass uns Klärungspunkte, sofern vorhanden, danach einen nach dem anderen durchgehen."
