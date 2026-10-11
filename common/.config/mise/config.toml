@@ -6,6 +6,7 @@ grok = "latest"
 node = "24"
 "npm:@datalust/seqcli" = "latest"
 pi = "latest"
+rust = "stable"
 
 [settings]
 # always install the newest release, don't wait for mise's default minimum release age
