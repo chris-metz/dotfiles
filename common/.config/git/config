@@ -8,6 +8,10 @@
 [core]
   editor = nvim
 	autocrlf = input
+[credential "https://github.com"]
+  # empty helper drops inherited helpers (e.g. osxkeychain), so only gh is asked
+  helper =
+  helper = !gh auth git-credential
 ; [delta]
 ;   navigate = true    # use n and N to move between diff sections
 ;     delta detects terminal colors automatically; set one of these to disable auto-detection
