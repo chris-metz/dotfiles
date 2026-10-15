@@ -6,9 +6,12 @@ grok = "latest"
 node = "24"
 "npm:@datalust/seqcli" = "latest"
 pi = "latest"
-rust = "stable"
+# stable points at ~/.cargo/bin, rustup updates it (`rustup update`), not mise
+rust = { version = "stable", auto_update = false }
 
 [settings]
 # always install the newest release, don't wait for mise's default minimum release age
 minimum_release_age = "0"
 # minimum_release_age_excludes = ["claude"]
+# update every global tool in the background, checked at the shell prompt every tool_update.check_duration (24h)
+tool_update.global_auto = true
