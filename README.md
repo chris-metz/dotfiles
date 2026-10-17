@@ -47,6 +47,13 @@ After changing a mapping in System Settings, refresh the generated block in
 to only print the current mapping). Do this before the next `just setup`, which would
 otherwise reset the mapping to the old block.
 
+## SwiftBar
+
+`macos/swiftbar/` holds the [SwiftBar](https://github.com/swiftbar/SwiftBar) menu bar
+plugins. `just setup_macos` points SwiftBar's plugin folder straight at it, so a new
+executable script there shows up without a stow run. `nuc-tunnel.10s.sh` shows and
+toggles the `nuc-tunnel` fish function.
+
 ## Agent instructions
 
 `common/.config/agents/AGENTS.md` holds the global instructions for every coding agent.

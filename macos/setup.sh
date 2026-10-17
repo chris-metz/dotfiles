@@ -24,3 +24,8 @@ defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 27 \
 # Reload symbolic hotkeys so the change applies without logging out.
 /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
 echo "  applied."
+
+echo "SwiftBar plugin folder (menu bar scripts in macos/swiftbar)"
+# SwiftBar reads the plugins straight from the repo, so a new plugin needs no stow run.
+defaults write com.ameba.SwiftBar PluginDirectory -string "$(cd "$(dirname "$0")" && pwd)/swiftbar"
+echo "  applied. Restart SwiftBar if it is running."
