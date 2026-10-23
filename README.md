@@ -54,6 +54,27 @@ plugins. `just setup_macos` points SwiftBar's plugin folder straight at it, so a
 executable script there shows up without a stow run. `nuc-tunnel.10s.sh` shows and
 toggles the `nuc-tunnel` fish function.
 
+Besides 3300 and 8025, `nuc-tunnel open <port>` forwards one more port through the
+running tunnel (turning it on first if needed), and `nuc-tunnel close <port>` drops it
+again. `nuc-tunnel status` lists every forwarded port.
+
+The plugin also lists the apps Bauhof runs for an Abnahme (a run's app, started to try
+the change out), such as `#123 Example · bis 14:30`. A click forwards the app's port with `nuc-tunnel open` and
+opens it in the browser, at `http://localhost:<port>` unless its project has an address
+of its own. Two files on the Mac, outside the repo, set this up:
+
+- `~/.config/nuc-tunnel/bauhof-url`: the address you open Bauhof at (from `BAUHOF_URL`,
+  or `BAUHOF_HOST` with Bauhof's port), such as `https://bauhof.example.ts.net`. Bauhof
+  answers its API under no other name. Without the file the section is left out.
+- `~/.config/nuc-tunnel/app-urls`: one line per project with an address of its own, the
+  repo and then the address with `{port}`, such as
+  `owner/repo http://sub.app.localhost:{port}`.
+
+Whenever Bauhof answers, the plugin closes every forward that no running app needs,
+apart from 3300 and 8025, so a port opened by hand lasts only until the next run.
+Without Bauhof the plugin shows only the tunnel. It reads Bauhof's internal `/api/runs` and
+`/api/projects` with `jq` (part of macOS since 15), so a change there may need one here.
+
 ## Agent instructions
 
 `common/.config/agents/AGENTS.md` holds the global instructions for every coding agent.
