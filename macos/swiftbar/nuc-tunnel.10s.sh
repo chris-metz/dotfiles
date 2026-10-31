@@ -80,7 +80,7 @@ print_ports() {
     if [[ " ${forwarded[*]} " == *" $port "* ]]; then
       echo "localhost:$port → nucubuntu | size=11"
     else
-      echo "localhost:$port · frei | size=11"
+      echo "localhost:$port · nicht weitergeleitet | size=11"
     fi
     echo "--Entfernen | bash=$0 param1=remove param2=$port terminal=false refresh=true"
   done

@@ -61,6 +61,10 @@ closes it. In the menu, `Port hinzufügen…` asks for a port, and each port has
 with `Entfernen`. A port added to the file by hand gets forwarded the next time the
 tunnel turns on. Without the file the tunnel forwards nothing by itself.
 
+`add` refuses a port something else on the Mac already answers on, such as a dev server.
+Turning the tunnel on skips such a port with a warning, so the other ports still start;
+in the menu it shows as `nicht weitergeleitet`.
+
 `nuc-tunnel open <port>` forwards one more port through the running tunnel only for now
 (turning it on first if needed), and `nuc-tunnel close <port>` drops it again.
 `nuc-tunnel status` lists every forwarded port, `nuc-tunnel ports` the list.

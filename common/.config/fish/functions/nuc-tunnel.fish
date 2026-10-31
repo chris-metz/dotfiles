@@ -52,6 +52,12 @@ function nuc-tunnel --description "Toggle the SSH tunnel to the NUC (status: sho
             end
             return
         case add
+            # ssh could not forward a port something else on this Mac listens on, and
+            # would then not start the tunnel at all (ExitOnForwardFailure)
+            if not contains -- $port $forwarded; and __nuc_tunnel_taken $port
+                echo "nuc-tunnel: localhost:$port is taken on this Mac already" >&2
+                return 1
+            end
             if not contains -- $port $ports
                 mkdir -p (path dirname $list)
                 printf '%s\n' $ports $port >$list
@@ -91,8 +97,15 @@ function nuc-tunnel --description "Toggle the SSH tunnel to the NUC (status: sho
     # Turning on, or open: the tunnel has to be on
     if test -z "$pid"
         set -l forwards
+        set -l ports_started
         for p in $ports
+            # A port taken since it went on the list would keep the others from starting
+            if __nuc_tunnel_taken $p
+                echo "nuc-tunnel: skipped localhost:$p, it is taken on this Mac" >&2
+                continue
+            end
             set -a forwards -L $p:127.0.0.1:$p
+            set -a ports_started $p
         end
         # A socket left behind by a killed tunnel would keep ssh from taking control again
         rm -f $sock
@@ -101,9 +114,9 @@ function nuc-tunnel --description "Toggle the SSH tunnel to the NUC (status: sho
             -o ServerAliveInterval=15 -o ServerAliveCountMax=4 \
             $forwards $host
         or return 1
-        set forwarded $ports
-        if set -q ports[1]
-            echo "nuc-tunnel: on (localhost:"(string join , $ports)")"
+        set forwarded $ports_started
+        if set -q forwarded[1]
+            echo "nuc-tunnel: on (localhost:"(string join , $forwarded)")"
         else
             echo "nuc-tunnel: on"
         end
@@ -113,4 +126,10 @@ function nuc-tunnel --description "Toggle the SSH tunnel to the NUC (status: sho
         ssh -S $sock -O forward -L $forward $host
         and echo "nuc-tunnel: opened localhost:$port"
     end
+end
+
+# Whether something on this Mac answers on localhost:<port>, over IPv4 or IPv6. A
+# connection rather than netstat or lsof, which run from fish see no other process's ports.
+function __nuc_tunnel_taken --argument-names port
+    nc -z -G 1 127.0.0.1 $port 2>/dev/null; or nc -z -G 1 ::1 $port 2>/dev/null
 end
