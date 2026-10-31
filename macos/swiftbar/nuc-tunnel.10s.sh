@@ -1,21 +1,37 @@
 #!/bin/bash
 # SwiftBar plugin: shows the nuc-tunnel fish function's state, a click toggles it.
-# Below that, the apps Bauhof runs for an Abnahme; a click forwards one through the
-# tunnel and opens it.
+# Below that, the ports the tunnel always forwards, with a dialog to add one and a
+# submenu to remove one, and the apps Bauhof runs for an Abnahme; a click forwards one
+# through the tunnel and opens it.
 # ".10s" in the file name makes SwiftBar rerun it every 10 seconds.
 fish=/opt/homebrew/bin/fish
 toggle="bash=$fish param1=-c param2=nuc-tunnel terminal=false refresh=true"
-# Same ports as in nuc-tunnel.fish
-ports=(3300 8025)
 # Bauhof's address and the per-project app URLs, kept on this Mac rather than in the repo
 config=~/.config/nuc-tunnel
 
-# A click on an app reruns the plugin as: open <port> <url>
-if [[ $1 == open ]]; then
-  [[ $2 =~ ^[0-9]+$ && $3 =~ ^https?:// ]] || exit 1
-  $fish -c "nuc-tunnel open $2" && open "$3"
-  exit
-fi
+# A click reruns the plugin as: open <port> <url>, add, or remove <port>
+case $1 in
+  open)
+    [[ $2 =~ ^[0-9]+$ && $3 =~ ^https?:// ]] || exit 1
+    $fish -c "nuc-tunnel open $2" && open "$3"
+    exit
+    ;;
+  add)
+    # Cancel makes osascript fail, and leaves nothing to do
+    port=$(osascript -e 'text returned of (display dialog "Welchen Port soll der Tunnel immer weiterleiten?" default answer "" with title "NUC-Tunnel")') || exit 0
+    # nuc-tunnel checks the port and says why it refuses one; as an argument, not
+    # inside the command, so that the text typed in stays text
+    if ! error=$($fish -c 'nuc-tunnel add $argv' -- "${port//[[:space:]]/}" 2>&1 >/dev/null); then
+      osascript -e 'on run argv' -e 'display alert "Port nicht hinzugefügt" message (item 1 of argv)' -e 'end run' "$error" >/dev/null
+    fi
+    exit
+    ;;
+  remove)
+    [[ $2 =~ ^[0-9]+$ ]] || exit 1
+    $fish -c "nuc-tunnel remove $2"
+    exit
+    ;;
+esac
 
 # The apps that run in Bauhof, one line each: port, end (HH:MM), label, repo.
 # Fails without Bauhof, so that the section is left out.
@@ -56,6 +72,24 @@ app_url() {
   echo "http://localhost:$port"
 }
 
+# The ports on the list, each with a submenu to remove it, then those forwarded only
+# for now (by hand or for an Abnahme)
+print_ports() {
+  local port
+  for port in "${ports[@]}"; do
+    if [[ " ${forwarded[*]} " == *" $port "* ]]; then
+      echo "localhost:$port → nucubuntu | size=11"
+    else
+      echo "localhost:$port · frei | size=11"
+    fi
+    echo "--Entfernen | bash=$0 param1=remove param2=$port terminal=false refresh=true"
+  done
+  for port in "${forwarded[@]}"; do
+    [[ " ${ports[*]} " == *" $port "* ]] || echo "localhost:$port → nucubuntu | size=11"
+  done
+  echo "Port hinzufügen… | bash=$0 param1=add terminal=false refresh=true"
+}
+
 print_apps() {
   ((${#apps[@]})) || return
   echo "---"
@@ -69,6 +103,9 @@ forwarded=()
 if [[ $status =~ \(localhost:([0-9,]+)\) ]]; then
   IFS=, read -ra forwarded <<<"${BASH_REMATCH[1]}"
 fi
+# The ports the tunnel always forwards, from ~/.config/nuc-tunnel/ports. Numbers only,
+# so splitting them on line breaks is safe.
+ports=($($fish -c 'nuc-tunnel ports'))
 
 apps=()
 if rows=$(running_apps); then
@@ -94,9 +131,7 @@ if [[ $status == *": on"* ]]; then
   echo "NUC | sfimage=circle.fill sfcolor=#2F9E4F"
   echo "---"
   echo "Tunnel an | sfimage=circle.fill sfcolor=#2F9E4F"
-  for port in "${forwarded[@]}"; do
-    echo "localhost:$port → nucubuntu | size=11"
-  done
+  print_ports
   print_apps
   echo "---"
   echo "Ausschalten | $toggle"
@@ -104,7 +139,7 @@ else
   echo "NUC | sfimage=circle"
   echo "---"
   echo "Tunnel aus | sfimage=circle"
-  echo "Ports ${ports[*]} sind frei | size=11"
+  print_ports
   print_apps
   echo "---"
   echo "Einschalten | $toggle"

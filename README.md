@@ -54,9 +54,16 @@ plugins. `just setup_macos` points SwiftBar's plugin folder straight at it, so a
 executable script there shows up without a stow run. `nuc-tunnel.10s.sh` shows and
 toggles the `nuc-tunnel` fish function.
 
-Besides 3300 and 8025, `nuc-tunnel open <port>` forwards one more port through the
-running tunnel (turning it on first if needed), and `nuc-tunnel close <port>` drops it
-again. `nuc-tunnel status` lists every forwarded port.
+The tunnel always forwards the ports in `~/.config/nuc-tunnel/ports`, one per line, kept
+on the Mac rather than in the repo. `nuc-tunnel add <port>` puts one on that list and
+forwards it right away if the tunnel is on; `nuc-tunnel remove <port>` takes it off and
+closes it. In the menu, `Port hinzufügen…` asks for a port, and each port has a submenu
+with `Entfernen`. A port added to the file by hand gets forwarded the next time the
+tunnel turns on. Without the file the tunnel forwards nothing by itself.
+
+`nuc-tunnel open <port>` forwards one more port through the running tunnel only for now
+(turning it on first if needed), and `nuc-tunnel close <port>` drops it again.
+`nuc-tunnel status` lists every forwarded port, `nuc-tunnel ports` the list.
 
 The plugin also lists the apps Bauhof runs for an Abnahme (a run's app, started to try
 the change out), such as `#123 Example · bis 14:30`. A click forwards the app's port with `nuc-tunnel open` and
@@ -71,7 +78,7 @@ of its own. Two files on the Mac, outside the repo, set this up:
   `owner/repo http://sub.app.localhost:{port}`.
 
 Whenever Bauhof answers, the plugin closes every forward that no running app needs,
-apart from 3300 and 8025, so a port opened by hand lasts only until the next run.
+apart from those on the list, so a port opened by hand lasts only until the next run.
 Without Bauhof the plugin shows only the tunnel. It reads Bauhof's internal `/api/runs` and
 `/api/projects` with `jq` (part of macOS since 15), so a change there may need one here.
 
