@@ -1,7 +1,7 @@
 #!/bin/bash
 # SwiftBar plugin: shows the nuc-tunnel fish function's state, a click toggles it.
-# Below that, the ports the tunnel always forwards, with a dialog to add one and a
-# submenu to remove one, and the apps Bauhof runs for an Abnahme; a click forwards one
+# Below that, the ports the tunnel always forwards, with a dialog to add one and one to
+# remove some, and the apps Bauhof runs for an Abnahme; a click forwards one
 # through the tunnel and opens it.
 # ".10s" in the file name makes SwiftBar rerun it every 10 seconds.
 fish=/opt/homebrew/bin/fish
@@ -9,7 +9,7 @@ toggle="bash=$fish param1=-c param2=nuc-tunnel terminal=false refresh=true"
 # Bauhof's address and the per-project app URLs, kept on this Mac rather than in the repo
 config=~/.config/nuc-tunnel
 
-# A click reruns the plugin as: open <port> <url>, add, or remove <port>
+# A click reruns the plugin as: open <port> <url>, add, or remove
 case $1 in
   open)
     [[ $2 =~ ^[0-9]+$ && $3 =~ ^https?:// ]] || exit 1
@@ -27,8 +27,24 @@ case $1 in
     exit
     ;;
   remove)
-    [[ $2 =~ ^[0-9]+$ ]] || exit 1
-    $fish -c "nuc-tunnel remove $2"
+    # A dialog rather than a submenu per port: SwiftBar 2.1.1 greys out a submenu's
+    # parent line on the next run, and it no longer opens (swiftbar/SwiftBar#512)
+    ports=($($fish -c 'nuc-tunnel ports'))
+    ((${#ports[@]})) || exit 0
+    # One port per line; Cancel returns nothing
+    chosen=$(osascript \
+      -e 'on run argv' \
+      -e 'set chosen to choose from list argv with title "NUC-Tunnel" with prompt "Welche Ports soll der Tunnel nicht mehr weiterleiten?" OK button name "Entfernen" with multiple selections allowed' \
+      -e 'if chosen is false then return ""' \
+      -e 'set AppleScript'"'"'s text item delimiters to linefeed' \
+      -e 'return chosen as text' \
+      -e 'end run' "${ports[@]}") || exit 0
+    while read -r port; do
+      [[ $port =~ ^[0-9]+$ ]] || continue
+      if ! error=$($fish -c 'nuc-tunnel remove $argv' -- "$port" 2>&1 >/dev/null); then
+        osascript -e 'on run argv' -e 'display alert "Port nicht entfernt" message (item 1 of argv)' -e 'end run' "$error" >/dev/null
+      fi
+    done <<<"$chosen"
     exit
     ;;
 esac
@@ -72,8 +88,7 @@ app_url() {
   echo "http://localhost:$port"
 }
 
-# The ports on the list, each with a submenu to remove it, then those forwarded only
-# for now (by hand or for an Abnahme)
+# The ports on the list, then those forwarded only for now (by hand or for an Abnahme)
 print_ports() {
   local port
   for port in "${ports[@]}"; do
@@ -82,12 +97,12 @@ print_ports() {
     else
       echo "localhost:$port · nicht weitergeleitet | size=11"
     fi
-    echo "--Entfernen | bash=$0 param1=remove param2=$port terminal=false refresh=true"
   done
   for port in "${forwarded[@]}"; do
     [[ " ${ports[*]} " == *" $port "* ]] || echo "localhost:$port → nucubuntu | size=11"
   done
   echo "Port hinzufügen… | bash=$0 param1=add terminal=false refresh=true"
+  ((${#ports[@]})) && echo "Port entfernen… | bash=$0 param1=remove terminal=false refresh=true"
 }
 
 print_apps() {

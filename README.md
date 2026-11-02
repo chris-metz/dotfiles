@@ -57,9 +57,9 @@ toggles the `nuc-tunnel` fish function.
 The tunnel always forwards the ports in `~/.config/nuc-tunnel/ports`, one per line, kept
 on the Mac rather than in the repo. `nuc-tunnel add <port>` puts one on that list and
 forwards it right away if the tunnel is on; `nuc-tunnel remove <port>` takes it off and
-closes it. In the menu, `Port hinzufügen…` asks for a port, and each port has a submenu
-with `Entfernen`. A port added to the file by hand gets forwarded the next time the
-tunnel turns on. Without the file the tunnel forwards nothing by itself.
+closes it. In the menu, `Port hinzufügen…` asks for a port, and `Port entfernen…` lists
+the ports on the list to pick one or more from. A port added to the file by hand gets
+forwarded the next time the tunnel turns on. Without the file the tunnel forwards nothing by itself.
 
 `add` refuses a port something else on the Mac already answers on, such as a dev server.
 Turning the tunnel on skips such a port with a warning, so the other ports still start;
